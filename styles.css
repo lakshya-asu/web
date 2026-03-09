@@ -192,6 +192,24 @@ a {
   color: var(--muted);
 }
 
+.hero-tags {
+  margin-top: 0.9rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.hero-tags span {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  border: 1px solid rgba(86, 68, 151, 0.45);
+  background: rgba(216, 206, 248, 0.44);
+  color: #2f2266;
+  padding: 0.22rem 0.62rem;
+  border-radius: 999px;
+}
+
 .hero-cta {
   margin-top: 1.5rem;
   display: flex;
@@ -226,6 +244,10 @@ a {
   border-color: #7f6bc7;
   color: #2f2266;
   background: rgba(216, 206, 248, 0.4);
+}
+
+#opportunities .card {
+  border-top: 5px solid var(--accent);
 }
 
 .section {
@@ -393,6 +415,14 @@ a {
   .hero-layout {
     grid-template-columns: 1fr;
     gap: 1rem;
+  }
+
+  .hero-tags {
+    gap: 0.4rem;
+  }
+
+  .hero-tags span {
+    font-size: 0.76rem;
   }
 
   .hero-photo-wrap {
