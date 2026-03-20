@@ -340,3 +340,43 @@ nav {
 .info-card li strong { color: var(--cyan); }
 .info-card li a { color: var(--llm); }
 .info-card li a:hover { text-decoration: underline; }
+
+/* SKILLS */
+.chip-wrap { display: flex; flex-wrap: wrap; gap: 8px; }
+
+/* FOOTER */
+.footer {
+  padding: 48px 64px;
+  border-top: 1px solid var(--divider);
+  margin-top: 24px;
+}
+.footer h2 {
+  font-family: var(--font-heading);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+.footer p {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+}
+.contact-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+.contact-links a {
+  font-family: var(--font-heading);
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--cyan);
+}
+.contact-links a:hover { text-decoration: underline; }
+.footer-note {
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 1px;
+}
