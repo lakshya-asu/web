@@ -9,6 +9,9 @@
   --text:         #e2e8f0;
   --text-muted:   #4aacac;
   --text-dim:     #2a8080;
+  --media-bg:     #0f2e2e;   /* card media slot background */
+  --media-dim:    #1a6060;   /* card media placeholder text */
+  --card-title:   #d0f0f0;   /* card title text color */
 
   /* border colors */
   --border-ui:    #0f4040;   /* chip and ghost button borders */
@@ -193,15 +196,15 @@ nav {
 }
 .card.featured { grid-column: span 2; }
 
-.card-accent { height: 3px; width: 100%; }
+.card-accent { height: 3px; width: 100%; background: var(--card-border); }
 
 .card-media {
-  background: #0f2e2e;
+  background: var(--media-bg);
   height: 140px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #1a6060;
+  color: var(--media-dim);
   font-size: 10px;
   letter-spacing: 1px;
   position: relative;
@@ -216,6 +219,7 @@ nav {
   font-size: 8px;
   letter-spacing: 1px;
   padding: 3px 8px;
+  background: var(--cyan);
   color: var(--bg);
   font-weight: 700;
 }
@@ -232,7 +236,7 @@ nav {
   font-family: var(--font-heading);
   font-size: 15px;
   font-weight: 700;
-  color: #d0f0f0;
+  color: var(--card-title);
   margin-bottom: 6px;
 }
 .card-desc {
