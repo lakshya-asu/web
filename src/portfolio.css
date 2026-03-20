@@ -10,6 +10,10 @@
   --text-muted:   #4aacac;
   --text-dim:     #2a8080;
 
+  /* border colors */
+  --border-ui:    #0f4040;   /* chip and ghost button borders */
+  --border-photo: #0f4545;   /* hero photo frame border */
+
   /* tag category colors */
   --rl:       #00e5cc;
   --ros:      #00c2e0;
@@ -108,7 +112,7 @@ nav {
   font-size: 10px;
   letter-spacing: 2px;
   padding: 5px 12px;
-  border: 1px solid #0f4040;
+  border: 1px solid var(--border-ui);
   color: #2aacac;
 }
 .hero-btns {
@@ -132,14 +136,14 @@ nav {
   font-size: 11px;
   letter-spacing: 2px;
   padding: 10px 22px;
-  border: 1px solid #0f4040;
+  border: 1px solid var(--border-ui);
   color: var(--text-muted);
   cursor: pointer;
   background: transparent;
 }
 .hero-photo-wrap {
   background: #0c2222;
-  border: 1px solid #0f4545;
+  border: 1px solid var(--border-photo);
   height: 400px;
   position: relative;
   overflow: hidden;
