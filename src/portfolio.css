@@ -369,6 +369,7 @@ nav {
   margin-bottom: 24px;
 }
 .contact-links a {
+  text-decoration: none;
   font-family: var(--font-heading);
   font-size: 11px;
   letter-spacing: 2px;
