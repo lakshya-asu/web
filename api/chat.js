@@ -89,7 +89,7 @@ module.exports = async function handler(req, res) {
 
     return res.status(200).json({ reply: parsed.reply, emotion: parsed.emotion });
   } catch (err) {
-    console.error('Claude API error:', err.message);
+    console.error('Claude API error:', err.status, err.message, err.error);
     return res.status(500).json({ error: 'Failed to reach AI service' });
   }
 };
