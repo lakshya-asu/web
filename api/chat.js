@@ -1,5 +1,3 @@
-const Anthropic = require('@anthropic-ai/sdk');
-
 const VALID_EMOTIONS = ['happy', 'sad', 'angry', 'neutral', 'excited'];
 const MAX_MSG_LEN = 1000;
 
@@ -55,22 +53,34 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    const client = new Anthropic({ apiKey });
-
-    // Build message history for Claude format
     const messages = [
       ...history.map(h => ({ role: h.role === 'model' ? 'assistant' : 'user', content: h.text })),
       { role: 'user', content: message },
     ];
 
-    const response = await client.messages.create({
-      model: 'claude-haiku-4-5-20251001',
-      max_tokens: 256,
-      system: SYSTEM_PROMPT,
-      messages,
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01',
+      },
+      body: JSON.stringify({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 256,
+        system: SYSTEM_PROMPT,
+        messages,
+      }),
     });
 
-    const raw = response.content[0].text;
+    if (!response.ok) {
+      const err = await response.text();
+      console.error('Anthropic API error:', response.status, err);
+      return res.status(500).json({ error: 'Failed to reach AI service' });
+    }
+
+    const data = await response.json();
+    const raw = data.content[0].text;
 
     let parsed;
     try {
@@ -89,7 +99,7 @@ module.exports = async function handler(req, res) {
 
     return res.status(200).json({ reply: parsed.reply, emotion: parsed.emotion });
   } catch (err) {
-    console.error('Claude API error:', err.status, err.message, err.error);
+    console.error('Claude fetch error:', err.message);
     return res.status(500).json({ error: 'Failed to reach AI service' });
   }
 };
