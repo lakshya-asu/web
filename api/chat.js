@@ -82,9 +82,12 @@ module.exports = async function handler(req, res) {
     const data = await response.json();
     const raw = data.content[0].text;
 
+    // Strip markdown code fences if Claude wraps the JSON
+    const cleaned = raw.replace(/^```(?:json)?\s*/i, '').replace(/```\s*$/, '').trim();
+
     let parsed;
     try {
-      parsed = JSON.parse(raw);
+      parsed = JSON.parse(cleaned);
     } catch {
       console.error('Claude returned non-JSON:', raw);
       return res.status(200).json(FALLBACK);
