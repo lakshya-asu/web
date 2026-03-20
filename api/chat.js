@@ -24,12 +24,10 @@ module.exports = async function handler(req, res) {
   const origin = req.headers.origin || '';
 
   const isLocalDev = origin.startsWith('http://localhost') || origin.startsWith('http://127.0.0.1');
-  const isAllowed = isLocalDev || (ALLOWED_ORIGIN && origin === ALLOWED_ORIGIN);
+  const isVercel = origin.endsWith('.vercel.app');
+  const isCustom = ALLOWED_ORIGIN && origin === ALLOWED_ORIGIN;
+  const isAllowed = isLocalDev || isVercel || isCustom;
 
-  if (!ALLOWED_ORIGIN && !isLocalDev) {
-    console.error('ALLOWED_ORIGIN env var not set — blocking request');
-    return res.status(403).json({ error: 'Forbidden' });
-  }
   if (!isAllowed) {
     return res.status(403).json({ error: 'Forbidden' });
   }
