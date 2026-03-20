@@ -105,7 +105,7 @@ module.exports = async function handler(req, res) {
   const apiKey = process.env.CLAUDE_API_KEY;
   if (!apiKey) {
     console.error('CLAUDE_API_KEY not set');
-    return res.status(500).json({ error: 'Server configuration error' });
+    return res.status(200).json(FALLBACK);
   }
 
   try {
