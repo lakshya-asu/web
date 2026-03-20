@@ -561,6 +561,7 @@ This is the most complex module. Do it in sub-steps.
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { EMOTION_MAP } from './emotions.js';
+import { attachFaceScreen, updateFaceScreen, tickFaceScreen } from './faceScreen.js';
 
 // ── Bone name constants (fill in after Step 2 inspection) ───
 // Run the dev server, open console, and copy the logged bone names here.
@@ -581,6 +582,9 @@ let blinkTimer = randomBetween(3, 6);
 // Mouse target angles (radians)
 let targetHeadYaw = 0, targetHeadPitch = 0;
 let targetChestYaw = 0;
+
+// Face screen mesh reference — populated in Task 8 when faceScreen.js is wired in
+let _faceScreenMesh = null;
 
 function randomBetween(a, b) { return a + Math.random() * (b - a); }
 
@@ -622,10 +626,11 @@ export async function initRobot(scene) {
   // Mouse tracking
   window.addEventListener('mousemove', onMouseMove);
 
+  // _faceScreenMesh is populated in Task 8 (faceScreen.js wiring)
   return {
     root: robotRoot,
     bones,
-    faceScreenMesh,
+    get faceScreenMesh() { return _faceScreenMesh; },
     setEmotionCfg: (cfg) => { currentEmotionCfg = cfg; },
     triggerHeadJerk,
   };
@@ -1053,14 +1058,14 @@ export function setEmotion(emotion) {
 
 - [ ] **Step 2: Wire face screen into `robot.js`**
 
-The import at the top of `robot.js` already includes `attachFaceScreen`, `updateFaceScreen`, and `tickFaceScreen` (the full import was written in Task 7 Step 1). After bones are resolved in `initRobot`, add:
+The imports for `attachFaceScreen`, `updateFaceScreen`, and `tickFaceScreen` are already at the top of `robot.js` (written in Task 7 Step 1). After bones are resolved in `initRobot`, assign the module-level `_faceScreenMesh` variable:
 
 ```js
-const faceScreenMesh = attachFaceScreen(robotRoot, scene, bones.head);
-let _faceScreenMesh = faceScreenMesh;
+// _faceScreenMesh is declared at module scope in Task 7 — assign it here
+_faceScreenMesh = attachFaceScreen(robotRoot, scene, bones.head);
 ```
 
-`updateFaceScreen(_faceScreenMesh)` and `tickFaceScreen(delta * 1000)` are already called inside `updateRobot` (Task 7 Step 1 code). The return value already includes `faceScreenMesh` and `triggerHeadJerk`.
+`updateFaceScreen(_faceScreenMesh)` and `tickFaceScreen(delta * 1000)` are already called inside `updateRobot`. The `initRobot` return value exposes `faceScreenMesh` via a getter that reads `_faceScreenMesh` and `triggerHeadJerk` is already included.
 
 - [ ] **Step 3: Verify face screen renders on robot**
 
