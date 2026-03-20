@@ -1,4 +1,4 @@
-const { GoogleGenerativeAI } = require('@google/generative-ai');
+const Anthropic = require('@anthropic-ai/sdk');
 
 const VALID_EMOTIONS = ['happy', 'sad', 'angry', 'neutral', 'excited'];
 const MAX_MSG_LEN = 1000;
@@ -19,7 +19,7 @@ Choose the emotion that best matches the tone of your reply.`;
 const FALLBACK = { reply: "I'm having a little glitch. Try again!", emotion: 'neutral' };
 
 module.exports = async function handler(req, res) {
-  // CORS — strictly restrict to configured production domain
+  // CORS
   const ALLOWED_ORIGIN = process.env.ALLOWED_ORIGIN;
   const origin = req.headers.origin || '';
 
@@ -50,35 +50,35 @@ module.exports = async function handler(req, res) {
     return res.status(400).json({ error: 'Message too long' });
   }
 
-  const apiKey = process.env.GEMINI_API_KEY;
+  const apiKey = process.env.CLAUDE_API_KEY;
   if (!apiKey) {
-    console.error('GEMINI_API_KEY not set');
+    console.error('CLAUDE_API_KEY not set');
     return res.status(500).json({ error: 'Server configuration error' });
   }
 
   try {
-    const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({
-      model: 'gemini-2.0-flash',
-      systemInstruction: SYSTEM_PROMPT,
-      generationConfig: { responseMimeType: 'application/json' },
+    const client = new Anthropic({ apiKey });
+
+    // Build message history for Claude format
+    const messages = [
+      ...history.map(h => ({ role: h.role === 'model' ? 'assistant' : 'user', content: h.text })),
+      { role: 'user', content: message },
+    ];
+
+    const response = await client.messages.create({
+      model: 'claude-haiku-4-5-20251001',
+      max_tokens: 256,
+      system: SYSTEM_PROMPT,
+      messages,
     });
 
-    // Client trims history to last 20 turns before sending — use as-is
-    const geminiHistory = history.map(h => ({
-      role: h.role,
-      parts: [{ text: h.text }],
-    }));
-
-    const chat = model.startChat({ history: geminiHistory });
-    const result = await chat.sendMessage(message);
-    const raw = result.response.text();
+    const raw = response.content[0].text;
 
     let parsed;
     try {
       parsed = JSON.parse(raw);
     } catch {
-      console.error('Gemini returned non-JSON:', raw);
+      console.error('Claude returned non-JSON:', raw);
       return res.status(200).json(FALLBACK);
     }
 
@@ -91,7 +91,7 @@ module.exports = async function handler(req, res) {
 
     return res.status(200).json({ reply: parsed.reply, emotion: parsed.emotion });
   } catch (err) {
-    console.error('Gemini API error:', err.message);
+    console.error('Claude API error:', err.message);
     return res.status(500).json({ error: 'Failed to reach AI service' });
   }
 };
