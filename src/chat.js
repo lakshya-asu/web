@@ -1,5 +1,6 @@
 import { setEmotion } from './faceScreen.js';
 import { applyEmotion } from './emotions.js';
+import { fetchSidenote, hideSidenote } from './sidenote.js';
 
 let history = []; // { role: 'user'|'model', text: string }[]
 let ttsVoice = null;
@@ -104,7 +105,7 @@ async function sendMessage(text) {
 
   applyEmotionFull('thinking');
 
-  let reply, emotion;
+  let reply, emotion, sidenote_topic = null;
   try {
     const res = await fetch('/api/chat', {
       method: 'POST',
@@ -122,6 +123,7 @@ async function sendMessage(text) {
     const data = await res.json();
     reply = data.reply;
     emotion = data.emotion ?? 'neutral';
+    sidenote_topic = data.sidenote_topic ?? null;
   } catch (err) {
     console.error('Chat error:', err);
     addBubble("K-VRC is having trouble connecting. Try again?", 'robot');
@@ -136,6 +138,10 @@ async function sendMessage(text) {
   // Apply emotion then speak after 300ms transition
   applyEmotionFull(emotion);
   setTimeout(() => speak(reply), 300);
+
+  // Sidenote — fire-and-forget, non-blocking
+  if (sidenote_topic) fetchSidenote(sidenote_topic, trimmed);
+  else hideSidenote();
 }
 
 // ── STT (mic) ────────────────────────────────────────────────
@@ -191,7 +197,7 @@ export function initChat(robot, refs) {
 
   // Intro greeting (text only — no TTS until first user gesture, browser security constraint)
   addBubble(
-    "Hello! I'm K-VRC — Lakshya's robotic assistant. Ask me anything about his work, research, or background!",
+    "K-VRC online. What do you want.",
     'robot'
   );
   applyEmotionFull('excited');
