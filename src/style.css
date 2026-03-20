@@ -41,6 +41,43 @@ body { overflow-x: hidden; background: #080d0d; }
 }
 #loading-overlay.hidden { opacity: 0; pointer-events: none; }
 
+/* ── Emotion background layer ─────────────────────────────── */
+#bg-layer {
+  position: fixed; inset: 0; z-index: -1;
+  background: radial-gradient(ellipse 80% 60% at 50% 40%, var(--emotion-bg, transparent) 0%, transparent 70%);
+  transition: --emotion-bg 1.2s ease;
+  /* CSS custom property transitions need Houdini — use opacity trick instead */
+  opacity: 1;
+  transition: background 1.4s ease;
+}
+
+/* ── Emotion indicator ────────────────────────────────────── */
+#emotion-indicator {
+  position: absolute;
+  right: 2rem; top: 50%; transform: translateY(-50%);
+  z-index: 10;
+  display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+}
+
+#emotion-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+  transition: background 0.8s ease, box-shadow 0.8s ease;
+  writing-mode: horizontal-tb;
+  flex-shrink: 0;
+}
+
+#emotion-label {
+  font-family: var(--font-heading);
+  font-size: 0.62rem; font-weight: 600;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: rgba(255,255,255,0.25);
+  transition: color 0.8s ease;
+}
+
 /* ── Minimal nav ──────────────────────────────────────────── */
 #site-nav {
   position: fixed; top: 0; left: 0; right: 0;

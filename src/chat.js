@@ -52,9 +52,30 @@ function addBubble(text, role) {
   log.scrollTop = log.scrollHeight;
 }
 
+// ── Emotion colours for UI ───────────────────────────────────
+const EMOTION_UI = {
+  neutral:  { dot: '#ff6a00', bg: 'radial-gradient(ellipse 80% 60% at 50% 40%, rgba(255,106,0,0.05) 0%, transparent 70%)' },
+  happy:    { dot: '#ff8c00', bg: 'radial-gradient(ellipse 80% 60% at 50% 40%, rgba(255,140,0,0.07) 0%, transparent 70%)' },
+  excited:  { dot: '#ffffff', bg: 'radial-gradient(ellipse 80% 60% at 50% 40%, rgba(255,255,255,0.04) 0%, transparent 70%)' },
+  sad:      { dot: '#4466aa', bg: 'radial-gradient(ellipse 80% 60% at 50% 40%, rgba(68,102,170,0.08) 0%, transparent 70%)' },
+  angry:    { dot: '#ff2200', bg: 'radial-gradient(ellipse 80% 60% at 50% 40%, rgba(255,34,0,0.08) 0%, transparent 70%)'  },
+  thinking: { dot: '#ffcc00', bg: 'radial-gradient(ellipse 80% 60% at 50% 40%, rgba(255,204,0,0.05) 0%, transparent 70%)' },
+};
+
+function updateEmotionUI(emotion) {
+  const ui = EMOTION_UI[emotion] ?? EMOTION_UI.neutral;
+  const dot = document.getElementById('emotion-dot');
+  const label = document.getElementById('emotion-label');
+  const bg = document.getElementById('bg-layer');
+  if (dot) { dot.style.background = ui.dot; dot.style.boxShadow = `0 0 10px ${ui.dot}`; }
+  if (label) label.textContent = emotion;
+  if (bg) bg.style.background = ui.bg;
+}
+
 // ── Emotion application ──────────────────────────────────────
 function applyEmotionFull(emotion) {
   setEmotion(emotion);
+  updateEmotionUI(emotion);
   if (sceneRefs) {
     const cfg = applyEmotion(emotion, sceneRefs);
     robotRef?.setEmotionCfg(cfg);
