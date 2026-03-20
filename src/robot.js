@@ -1,14 +1,27 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
 import { EMOTION_MAP } from './emotions.js';
 import { attachFaceScreen, updateFaceScreen, tickFaceScreen } from './faceScreen.js';
 
 // ── Bone name constants (verified from GLB inspection) ───────
 // Rig uses Slavic naming convention. No jaw bone exists in this rig.
 const BONES = {
-  head:  'Head_6',    // helmet/head bone
-  jaw:   null,        // no jaw bone in this rig — jaw animations are no-ops
-  chest: 'spina_13',  // spine/chest bone
+  head:    'Head_6',
+  jaw:     null,
+  chest:   'spina_13',
+  armL:    'ruka1.L_9',
+  forearmL:'ruka2.L_8',
+  armR:    'ruka1.R_12',
+  forearmR:'ruka2.R_11',
+};
+
+// Mixamo FBX → robot bone key mapping (arm bones only)
+const DANCE_BONE_MAP = {
+  'mixamorig:LeftArm':     'armL',
+  'mixamorig:LeftForeArm': 'forearmL',
+  'mixamorig:RightArm':    'armR',
+  'mixamorig:RightForeArm':'forearmR',
 };
 
 // ── Module state ────────────────────────────────────────────
@@ -18,6 +31,12 @@ let baseY = 0;
 let clock = 0;
 let currentEmotionCfg = EMOTION_MAP.neutral;
 let blinkTimer = randomBetween(3, 6);
+
+// Dancing FBX ghost skeleton
+let fbxMixer = null;
+let fbxBones = {};        // mixamorig name → FBX bone object
+let dancingAction = null;
+let armRestQ = {};        // saved rest quaternions for arm bones (to restore on exit)
 
 // Mouse target angles (radians)
 let targetHeadYaw = 0, targetHeadPitch = 0;
@@ -49,13 +68,44 @@ export async function initRobot(scene) {
   // Resolve bone references
   robotRoot.traverse(obj => {
     if (obj.isBone || obj.type === 'Bone') {
-      if (obj.name === BONES.head)  bones.head  = obj;
-      if (obj.name === BONES.chest) bones.chest = obj;
-      // BONES.jaw is null — no jaw bone in this rig
+      if (obj.name === BONES.head)     bones.head     = obj;
+      if (obj.name === BONES.chest)    bones.chest    = obj;
+      if (obj.name === BONES.armL)     bones.armL     = obj;
+      if (obj.name === BONES.forearmL) bones.forearmL = obj;
+      if (obj.name === BONES.armR)     bones.armR     = obj;
+      if (obj.name === BONES.forearmR) bones.forearmR = obj;
     }
   });
 
-  console.log('K-VRC bones resolved:', { head: !!bones.head, chest: !!bones.chest });
+  // Save arm rest quaternions so we can restore them when leaving excited state
+  for (const key of ['armL', 'forearmL', 'armR', 'forearmR']) {
+    if (bones[key]) armRestQ[key] = bones[key].quaternion.clone();
+  }
+
+  console.log('K-VRC bones resolved:', {
+    head: !!bones.head, chest: !!bones.chest,
+    armL: !!bones.armL, forearmL: !!bones.forearmL,
+    armR: !!bones.armR, forearmR: !!bones.forearmR,
+  });
+
+  // Load dancing FBX as invisible ghost skeleton for excited arm animation
+  const fbxLoader = new FBXLoader();
+  fbxLoader.load('/Dancing.fbx', (fbx) => {
+    fbx.visible = false;
+    scene.add(fbx);
+
+    // Index FBX arm bones by Mixamo name
+    fbx.traverse(obj => {
+      if (DANCE_BONE_MAP[obj.name]) fbxBones[obj.name] = obj;
+    });
+
+    if (fbx.animations?.length) {
+      fbxMixer = new THREE.AnimationMixer(fbx);
+      dancingAction = fbxMixer.clipAction(fbx.animations[0]);
+      dancingAction.setLoop(THREE.LoopRepeat);
+    }
+    console.log('Dancing FBX loaded, arm bones:', Object.keys(fbxBones));
+  }, undefined, (err) => console.warn('Dancing FBX failed:', err));
 
   // Attach face screen to head bone (fallback plane — single merged mesh in this GLB)
   _faceScreenMesh = attachFaceScreen(robotRoot, scene, bones.head);
@@ -132,6 +182,16 @@ export function updateRobot(delta) {
     // jaw blink skipped — handled by canvas blink in faceScreen.js
   }
 
+  // Dancing arm retargeting — active only during excited 'bob' motion
+  if (activeMotionType === 'bob' && fbxMixer) {
+    fbxMixer.update(delta);
+    for (const [fbxName, boneKey] of Object.entries(DANCE_BONE_MAP)) {
+      const src = fbxBones[fbxName];
+      const dst = bones[boneKey];
+      if (src && dst) dst.quaternion.copy(src.quaternion);
+    }
+  }
+
   // Face canvas blink (independent of bone rig)
   tickFaceScreen(delta * 1000);
 
@@ -146,6 +206,17 @@ export function updateRobot(delta) {
 export function startBodyMotion(name) {
   if (activeMotionId !== null) { cancelAnimationFrame(activeMotionId); activeMotionId = null; }
   if (activeShakeTimeout !== null) { clearTimeout(activeShakeTimeout); activeShakeTimeout = null; }
+
+  // Stop dancing and restore arm rest poses when leaving excited bob
+  if (activeMotionType === 'bob' && name !== 'bob') {
+    if (dancingAction) dancingAction.stop();
+    for (const key of ['armL', 'forearmL', 'armR', 'forearmR']) {
+      if (bones[key] && armRestQ[key]) {
+        bones[key].quaternion.copy(armRestQ[key]);
+      }
+    }
+  }
+
   activeMotionType = name;
 
   switch (name) {
@@ -189,6 +260,9 @@ function _motionNod() {
 // NOTE: `baseY` is module-scope (let baseY = 0 at top of file)
 // NOTE: updateRobot skips position.y float write when activeMotionType === 'bob' (see Change 5)
 function _motionBob() {
+  // Start dancing FBX animation if loaded
+  if (dancingAction) dancingAction.play();
+
   let t = 0;
   function loop() {
     if (activeMotionType !== 'bob') return;
