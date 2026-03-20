@@ -54,17 +54,18 @@ body { overflow-x: hidden; background: #080d0d; }
 /* ── Emotion indicator ────────────────────────────────────── */
 #emotion-indicator {
   position: absolute;
-  right: 2rem; top: 50%; transform: translateY(-50%);
+  left: 2rem; top: 50%; transform: translateY(-50%);
   z-index: 10;
   display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
   writing-mode: vertical-rl;
   text-orientation: mixed;
+  transform: translateY(-50%) rotate(180deg);
 }
 
 #emotion-dot {
-  width: 6px; height: 6px; border-radius: 50%;
+  width: 8px; height: 8px; border-radius: 50%;
   background: var(--accent);
-  box-shadow: 0 0 8px var(--accent);
+  box-shadow: 0 0 10px var(--accent);
   transition: background 0.8s ease, box-shadow 0.8s ease;
   writing-mode: horizontal-tb;
   flex-shrink: 0;
@@ -72,9 +73,9 @@ body { overflow-x: hidden; background: #080d0d; }
 
 #emotion-label {
   font-family: var(--font-heading);
-  font-size: 0.62rem; font-weight: 600;
-  letter-spacing: 0.18em; text-transform: uppercase;
-  color: rgba(255,255,255,0.25);
+  font-size: 0.85rem; font-weight: 600;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
   transition: color 0.8s ease;
 }
 
