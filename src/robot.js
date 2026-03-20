@@ -193,7 +193,9 @@ function _motionBob() {
   function loop() {
     if (activeMotionType !== 'bob') return;
     t += 0.016;
-    if (robotRoot) robotRoot.position.y = baseY + Math.sin(t * 18) * 0.015;
+    // Slow base frequency; sin^3 shape lingers at rest, snaps through peaks
+    const s = Math.sin(t * 3.5);
+    if (robotRoot) robotRoot.position.y = baseY + Math.sign(s) * Math.pow(Math.abs(s), 2.5) * 0.06;
     activeMotionId = requestAnimationFrame(loop);
   }
   loop();
