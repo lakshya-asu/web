@@ -10,7 +10,9 @@
   --glass-bg: rgba(12, 12, 12, 0.82);
   --border: rgba(255, 255, 255, 0.08);
   --radius: 16px;
-  font-family: 'Space Grotesk', sans-serif;
+  --font-ui: 'Poppins', sans-serif;
+  --font-heading: 'Montserrat', sans-serif;
+  font-family: var(--font-ui);
   color: var(--text);
   background: var(--bg);
 }
@@ -22,7 +24,8 @@ body { overflow-x: hidden; background: #000; }
   position: fixed; inset: 0; z-index: 100;
   background: #000;
   display: flex; align-items: center; justify-content: center;
-  font-size: 0.85rem; letter-spacing: 0.18em; text-transform: uppercase;
+  font-family: var(--font-heading);
+  font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 600;
   color: var(--text-muted);
   transition: opacity 0.6s ease;
 }
@@ -37,12 +40,23 @@ body { overflow-x: hidden; background: #000; }
 }
 
 #site-nav a {
-  font-size: 0.82rem; font-weight: 500; letter-spacing: 0.04em;
-  color: var(--text-muted);
+  font-family: var(--font-heading);
+  font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #fff;
   text-decoration: none;
-  transition: color 0.2s;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 8px;
+  padding: 0.45rem 1rem;
+  backdrop-filter: blur(12px);
+  transition: background 0.2s, border-color 0.2s;
 }
-#site-nav a:hover { color: var(--text); }
+#site-nav a:hover {
+  background: rgba(255, 106, 0, 0.15);
+  border-color: rgba(255, 106, 0, 0.4);
+  color: #fff;
+}
 
 /* ── Hero 3D container ────────────────────────────────────── */
 #hero-3d {
@@ -96,25 +110,26 @@ body { overflow-x: hidden; background: #000; }
   border: 1px solid rgba(255, 106, 0, 0.2);
 }
 
-/* Input bar — wide pill like Claude */
+/* Input bar — rectangular with soft corners */
 #chat-input-row {
-  display: flex; align-items: center; gap: 0.5rem;
-  background: rgba(20, 20, 20, 0.9);
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  padding: 0.6rem 0.6rem 0.6rem 1.2rem;
-  backdrop-filter: blur(20px);
-  box-shadow: 0 0 0 1px rgba(255,255,255,0.04), 0 8px 32px rgba(0,0,0,0.5);
-  transition: border-color 0.2s;
+  display: flex; align-items: center; gap: 0.6rem;
+  background: rgba(16, 16, 16, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  padding: 0.7rem 0.7rem 0.7rem 1.1rem;
+  backdrop-filter: blur(24px);
+  box-shadow: 0 4px 40px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.03);
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 #chat-input-row:focus-within {
-  border-color: rgba(255, 106, 0, 0.35);
+  border-color: rgba(255, 106, 0, 0.4);
+  box-shadow: 0 4px 40px rgba(0,0,0,0.6), 0 0 16px rgba(255,106,0,0.08);
 }
 
 #mic-btn {
   background: none; border: none; cursor: pointer;
-  font-size: 1rem; padding: 0.2rem 0.35rem;
-  color: var(--text-muted); opacity: 0.6;
+  font-size: 1rem; padding: 0.2rem 0.3rem;
+  color: var(--text-muted); opacity: 0.55;
   transition: opacity 0.2s, color 0.2s;
   flex-shrink: 0;
 }
@@ -123,21 +138,22 @@ body { overflow-x: hidden; background: #000; }
 
 #chat-input {
   flex: 1; background: none; border: none; outline: none;
-  color: var(--text); font-size: 0.9rem; font-family: inherit;
-  min-width: 0;
+  color: var(--text); font-size: 0.88rem;
+  font-family: var(--font-ui); font-weight: 300;
+  min-width: 0; letter-spacing: 0.01em;
 }
-#chat-input::placeholder { color: var(--text-muted); }
+#chat-input::placeholder { color: var(--text-muted); font-weight: 300; }
 
 #send-btn {
   background: var(--accent); border: none; cursor: pointer;
-  color: #000; font-weight: 600; font-size: 0.8rem;
-  padding: 0.45rem 1rem; border-radius: 999px;
+  color: #000; font-weight: 600; font-size: 0.75rem;
+  font-family: var(--font-heading); letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 0.5rem 1.1rem; border-radius: 9px;
   transition: opacity 0.2s, transform 0.15s;
   flex-shrink: 0;
-  letter-spacing: 0.02em;
 }
-#send-btn:hover { transform: scale(1.03); }
-#send-btn:disabled { opacity: 0.3; cursor: not-allowed; transform: none; }
+#send-btn:hover { transform: scale(1.02); opacity: 0.9; }
+#send-btn:disabled { opacity: 0.25; cursor: not-allowed; transform: none; }
 
 /* Legacy portfolio variables (portfolio sections only — do NOT override K-VRC theme above) */
 :root {
@@ -158,14 +174,14 @@ body {
   padding: 0;
   color: var(--ink);
   background: #000;
-  font-family: "Space Grotesk", sans-serif;
+  font-family: 'Poppins', sans-serif;
   scroll-behavior: smooth;
 }
 
 h1,
 h2,
 h3 {
-  font-family: "IBM Plex Serif", serif;
+  font-family: 'Montserrat', sans-serif;
   margin-top: 0;
 }
 
