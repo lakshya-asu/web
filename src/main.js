@@ -22,8 +22,8 @@ const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x000000);
 
 const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
-camera.position.set(0, 1.2, 6.5);
-camera.lookAt(0, 1.0, 0);
+camera.position.set(0, 0.5, 4.5);
+camera.lookAt(0, 0.4, 0);
 
 // ── Lights ──────────────────────────────────────────────────
 RectAreaLightUniformsLib.init();
