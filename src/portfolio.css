@@ -1,0 +1,160 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:           #060e0e;
+  --card-bg:      #0c2020;
+  --card-border:  #0f3535;
+  --divider:      #0f3535;
+  --cyan:         #00e5cc;
+  --text:         #e2e8f0;
+  --text-muted:   #4aacac;
+  --text-dim:     #2a8080;
+
+  /* tag category colors */
+  --rl:       #00e5cc;
+  --ros:      #00c2e0;
+  --llm:      #38bdf8;
+  --vr:       #818cf8;
+  --hardware: #34d399;
+  --vision:   #22d3ee;
+  --sim:      #67e8f9;
+  --ml:       #a78bfa;
+
+  --font-name:    'League Spartan', sans-serif;
+  --font-heading: 'Montserrat', sans-serif;
+  --font-body:    'Poppins', sans-serif;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  line-height: 1.6;
+}
+
+a { text-decoration: none; color: inherit; }
+img { display: block; max-width: 100%; }
+
+/* NAV */
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 64px;
+  border-bottom: 1px solid var(--divider);
+  margin-bottom: 52px;
+}
+.nav-brand {
+  font-family: var(--font-heading);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  color: var(--cyan);
+}
+.nav-links {
+  display: flex;
+  gap: 24px;
+}
+.nav-links a {
+  font-family: var(--font-heading);
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: #3a9090;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--cyan); }
+
+/* HERO */
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 56px;
+  align-items: center;
+  padding: 0 64px;
+  margin-bottom: 80px;
+}
+.hero-tag {
+  font-family: var(--font-heading);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 5px;
+  color: var(--cyan);
+  margin-bottom: 16px;
+}
+.hero-name {
+  font-family: var(--font-name);
+  font-size: 62px;
+  font-weight: 900;
+  line-height: 1;
+  color: #fff;
+  letter-spacing: -2px;
+  white-space: nowrap;
+}
+.hero-sub {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-top: 18px;
+  line-height: 1.75;
+  max-width: 440px;
+}
+.hero-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 22px;
+}
+.hero-chip {
+  font-family: var(--font-heading);
+  font-size: 10px;
+  letter-spacing: 2px;
+  padding: 5px 12px;
+  border: 1px solid #0f4040;
+  color: #2aacac;
+}
+.hero-btns {
+  display: flex;
+  gap: 12px;
+  margin-top: 28px;
+}
+.btn-primary {
+  font-family: var(--font-heading);
+  font-size: 11px;
+  letter-spacing: 2px;
+  padding: 10px 22px;
+  background: var(--cyan);
+  color: var(--bg);
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+}
+.btn-ghost {
+  font-family: var(--font-heading);
+  font-size: 11px;
+  letter-spacing: 2px;
+  padding: 10px 22px;
+  border: 1px solid #0f4040;
+  color: var(--text-muted);
+  cursor: pointer;
+  background: transparent;
+}
+.hero-photo-wrap {
+  background: #0c2222;
+  border: 1px solid #0f4545;
+  height: 400px;
+  position: relative;
+  overflow: hidden;
+}
+.hero-photo-wrap::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--cyan);
+  z-index: 1;
+}
+.hero-photo-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+}
