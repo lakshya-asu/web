@@ -1,2 +1,5 @@
 .vscode/
 .worktrees/
+.env
+node_modules/
+dist/
