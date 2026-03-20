@@ -19,7 +19,7 @@ renderer.toneMappingExposure = 1.0;
 
 // ── Scene & Camera ──────────────────────────────────────────
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x000000);
+scene.background = new THREE.Color(0x080d0d);
 
 const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
 camera.position.set(0, 0.5, 4.5);
@@ -28,19 +28,24 @@ camera.lookAt(0, 0.4, 0);
 // ── Lights ──────────────────────────────────────────────────
 RectAreaLightUniformsLib.init();
 
-const ambient = new THREE.AmbientLight(0xffffff, 0.05);
+const ambient = new THREE.AmbientLight(0xffffff, 0.03);
 scene.add(ambient);
 
 // Rim light behind the robot
-export const rimLight = new THREE.RectAreaLight(0xff6a00, 4, 2, 3);
-rimLight.position.set(0, 1.5, -1.5);
-rimLight.lookAt(0, 1.0, 0);
+export const rimLight = new THREE.RectAreaLight(0xff6a00, 1.8, 2, 3);
+rimLight.position.set(0, 0.6, -0.6);
+rimLight.lookAt(0, 0.4, 0);
 scene.add(rimLight);
 
 // Face glow point light
-export const faceLight = new THREE.PointLight(0xff6a00, 1.2, 3);
-faceLight.position.set(0, 1.6, 1.5);
+export const faceLight = new THREE.PointLight(0xff6a00, 0.5, 2);
+faceLight.position.set(0, 0.65, 0.6);
 scene.add(faceLight);
+
+// Subtle teal fill light from upper-left to break up the darkness
+const fillLight = new THREE.PointLight(0x0d4f4f, 0.6, 6);
+fillLight.position.set(-2, 1.5, 2);
+scene.add(fillLight);
 
 // ── Post-processing ─────────────────────────────────────────
 const composer = new EffectComposer(renderer);

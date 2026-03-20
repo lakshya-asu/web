@@ -42,8 +42,8 @@ export async function initRobot(scene) {
   scene.add(robotRoot);
 
   // Center and scale robot (adjust values after visual check)
-  robotRoot.scale.setScalar(0.33);
-  robotRoot.position.set(0, -0.3, 0);
+  robotRoot.scale.setScalar(0.165);
+  robotRoot.position.set(0, -0.15, 0);
   baseY = robotRoot.position.y;
 
   // Resolve bone references

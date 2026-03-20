@@ -17,7 +17,17 @@
   background: var(--bg);
 }
 
-body { overflow-x: hidden; background: #000; }
+body { overflow-x: hidden; background: #080d0d; }
+
+/* ── Background atmosphere ────────────────────────────────── */
+#hero-3d::before {
+  content: '';
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background:
+    radial-gradient(ellipse 60% 50% at 20% 60%, rgba(13, 79, 79, 0.18) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 35% at 80% 30%, rgba(255, 106, 0, 0.06) 0%, transparent 65%),
+    radial-gradient(ellipse 70% 40% at 50% 100%, rgba(10, 55, 55, 0.25) 0%, transparent 60%);
+}
 
 /* ── Loading overlay ──────────────────────────────────────── */
 #loading-overlay {
