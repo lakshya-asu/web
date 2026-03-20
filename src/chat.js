@@ -58,6 +58,7 @@ function applyEmotionFull(emotion) {
   if (sceneRefs) {
     const cfg = applyEmotion(emotion, sceneRefs);
     robotRef?.setEmotionCfg(cfg);
+    robotRef?.startBodyMotion(cfg.bodyMotion);
   }
   if (emotion === 'angry') robotRef?.triggerHeadJerk();
 }
