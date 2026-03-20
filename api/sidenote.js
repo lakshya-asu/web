@@ -46,6 +46,7 @@ const REFERENCES = [
   { label: "Judea Pearl — The Book of Why", url: 'https://doi.org/10.1145/3241036' },
   { label: "Lakshya's portfolio", url: 'https://lakshya-asu.github.io/web/portfolio.html' },
 ];
+const VALID_URLS = new Set(REFERENCES.map(r => r.url));
 
 const SYSTEM_PROMPT = `You are a perspective engine that speaks in Lakshya Jain's voice.
 
@@ -105,6 +106,7 @@ module.exports = async function handler(req, res) {
   const apiKey = process.env.CLAUDE_API_KEY;
   if (!apiKey) {
     console.error('CLAUDE_API_KEY not set');
+    // Intentional: sidenote is a non-critical widget — degrade silently rather than surface a 500
     return res.status(200).json(FALLBACK);
   }
 
@@ -120,7 +122,7 @@ module.exports = async function handler(req, res) {
         model: 'claude-haiku-4-5-20251001',
         max_tokens: 256,
         system: SYSTEM_PROMPT,
-        messages: [{ role: 'user', content: `Topic: ${topic}\nUser said: ${message}` }],
+        messages: [{ role: 'user', content: `<topic>${topic}</topic>\n<user_message>${message}</user_message>` }],
       }),
     });
 
@@ -142,7 +144,9 @@ module.exports = async function handler(req, res) {
     }
 
     const text = (typeof parsed.text === 'string' && parsed.text.trim()) ? parsed.text.trim() : null;
-    const links = Array.isArray(parsed.links) ? parsed.links.filter(l => l.label && l.url) : [];
+    const links = Array.isArray(parsed.links)
+      ? parsed.links.filter(l => l.label && l.url && VALID_URLS.has(l.url))
+      : [];
 
     return res.status(200).json({ text, links });
   } catch (err) {
