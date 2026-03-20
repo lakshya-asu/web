@@ -191,7 +191,8 @@ function _motionNod() {
 }
 
 // Excited — fast root bob (vertical bounce)
-// Note: updateRobot also writes robotRoot.position.y for float.
+// Note: `baseY` is declared at module scope in robot.js (line 17) — safe to reference here.
+// updateRobot also writes robotRoot.position.y for float.
 // The guard in Step 5 skips float when 'bob' is active so this is visible.
 function _motionBob() {
   let t = 0;
@@ -206,16 +207,17 @@ function _motionBob() {
   loop();
 }
 
-// Sad — chest slumps forward, held
+// Sad — chest slumps forward, held; stops scheduling once converged
 function _motionSlump() {
+  const TARGET = THREE.MathUtils.degToRad(6);
   function loop() {
     if (activeMotionType !== 'slump') return;
     if (bones.chest) {
-      bones.chest.rotation.x = THREE.MathUtils.lerp(
-        bones.chest.rotation.x,
-        THREE.MathUtils.degToRad(6),
-        0.04
-      );
+      if (Math.abs(bones.chest.rotation.x - TARGET) < 0.001) {
+        bones.chest.rotation.x = TARGET;
+        return; // converged — stop RAF loop
+      }
+      bones.chest.rotation.x = THREE.MathUtils.lerp(bones.chest.rotation.x, TARGET, 0.04);
     }
     activeMotionId = requestAnimationFrame(loop);
   }
