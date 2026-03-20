@@ -69,11 +69,14 @@ async function sendMessage(text) {
 
   const input = document.getElementById('chat-input');
   const sendBtn = document.getElementById('send-btn');
+  if (sendBtn.disabled) return; // block Enter-key re-entrancy during debounce
   input.value = '';
   sendBtn.disabled = true;
   setTimeout(() => { sendBtn.disabled = false; }, 1000); // debounce
 
   addBubble(trimmed, 'user');
+  // Capture prior history before pushing user message — sent as context, not including current turn
+  const historySnapshot = history.slice(-20);
   history.push({ role: 'user', text: trimmed });
   history = history.slice(-20);
 
@@ -84,7 +87,7 @@ async function sendMessage(text) {
     const res = await fetch('/api/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: trimmed, history }),
+      body: JSON.stringify({ message: trimmed, history: historySnapshot }),
     });
 
     if (res.status === 400) {

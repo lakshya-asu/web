@@ -109,22 +109,17 @@ body { overflow-x: hidden; }
 }
 #send-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
+/* Legacy portfolio variables (portfolio sections only — do NOT override K-VRC theme above) */
 :root {
-  --bg: #c5efcd;
   --surface: #e8f9ea;
   --ink: #1f1c33;
   --muted: #4f4a72;
   --line: #97b8a9;
-  --accent: #6340ab;
   --accent-soft: #d8cef8;
   --mint-deep: #78ba9d;
   --violet-soft: #8f79d9;
   --shadow: 0 14px 34px rgba(53, 44, 92, 0.2);
   --radius: 16px;
-}
-
-* {
-  box-sizing: border-box;
 }
 
 html,
