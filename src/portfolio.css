@@ -201,7 +201,7 @@ nav {
 
 .card-media {
   background: var(--media-bg);
-  height: 140px;
+  height: 350px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -211,7 +211,7 @@ nav {
   position: relative;
   font-family: var(--font-heading);
 }
-.card.featured .card-media { height: 180px; }
+.card.featured .card-media { height: 450px; }
 
 .card-media iframe {
   position: absolute;
