@@ -14,9 +14,11 @@
       href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&family=Space+Grotesk:wght@400;500;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
+    <div id="loading-overlay">
+      <span>Initialising K-VRC...</span>
+    </div>
     <div class="bg-orb orb-a"></div>
     <div class="bg-orb orb-b"></div>
     <header class="site-header" id="top">
@@ -34,38 +36,24 @@
         </ul>
       </nav>
 
-      <section class="hero reveal">
-        <div class="hero-layout">
-          <div class="hero-copy">
-            <p class="hero-kicker">Open to Robotics R&D and Autonomy Software Roles | MS Robotics @ ASU</p>
-            <h1>I Build Research-Grade Robotics Systems Ready for Real-World Deployment.</h1>
-            <p class="hero-summary">
-              Robotics software developer in the job market with a strong research foundation in
-              causal reinforcement learning, probabilistic reasoning, and embodied autonomy,
-              plus hands-on experience shipping ROS2-driven systems for field and simulation.
-            </p>
-            <div class="hero-tags">
-              <span>Open to Full-Time Roles</span>
-              <span>Robotics R&D</span>
-              <span>Autonomy Software</span>
-              <span>ROS2 + MoveIt + Simulation</span>
-            </div>
-            <div class="hero-cta">
-              <a class="btn btn-primary" href="#projects">Explore Research Work</a>
-              <a class="btn btn-secondary" href="mailto:lakshyajain.work@gmail.com">Hire / Contact Me</a>
-              <a class="btn btn-ghost" href="https://github.com/lakshya-asu" target="_blank" rel="noopener noreferrer">GitHub</a>
-              <a class="btn btn-ghost" href="https://linkedin.com/in/lakshyajain04" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-            </div>
-          </div>
-          <figure class="hero-photo-wrap">
-            <img
-              class="hero-photo"
-              src="website headshot.png"
-              alt="Lakshya Jain headshot"
+      <div id="hero-3d">
+        <canvas id="three-canvas"></canvas>
+        <div id="chat-overlay">
+          <div id="chat-log" role="log" aria-live="polite" aria-label="Conversation with K-VRC"></div>
+          <div id="chat-input-row">
+            <button id="mic-btn" aria-label="Start voice input" title="Voice input">🎤</button>
+            <input
+              id="chat-input"
+              type="text"
+              placeholder="Ask K-VRC anything..."
+              aria-label="Message K-VRC"
+              maxlength="1000"
+              autocomplete="off"
             />
-          </figure>
+            <button id="send-btn">Send</button>
+          </div>
         </div>
-      </section>
+      </div>
     </header>
 
     <main>
@@ -310,6 +298,6 @@
       <p class="tiny">Last updated: March 2026</p>
     </footer>
 
-    <script src="script.js"></script>
+    <script type="module" src="/src/main.js"></script>
   </body>
 </html>
