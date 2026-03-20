@@ -123,15 +123,17 @@ The exact names depend on the Blender armature and will not be known until the G
 - Slow vertical float: `robot.position.y = baseY + Math.sin(clock * 0.5) * 0.05`
 - Random eye blink every 3–6 seconds (close jaw/eye bones briefly then reopen)
 
+**Color palette note:** K-VRC is an orange/rust red character (from Love, Death & Robots). All rim and emission colors use a warm palette to complement the model — NOT cold cyan/blue.
+
 **Emotion → scene effect mapping:**
 | Emotion   | Rim colour   | Bloom intensity | Body motion        |
 |-----------|-------------|-----------------|-------------------|
-| neutral   | `#00f5ff`   | 0.8             | slow float         |
-| happy     | `#00f5ff`   | 1.2             | faster bounce      |
+| neutral   | `#ff6a00`   | 0.8             | slow float         |
+| happy     | `#ff8c00`   | 1.2             | faster bounce      |
 | excited   | `#ffffff`   | 1.8 (pulse)     | rapid head motion  |
-| sad       | `#4444ff`   | 0.4             | slow droop         |
-| angry     | `#ff2200`   | 1.4             | sharp jerk         |
-| thinking  | `#ffaa00`   | 0.6             | slow oscillate     | ← client-side only, never returned by Gemini |
+| sad       | `#4466aa`   | 0.4             | slow droop         |
+| angry     | `#ff2200`   | 1.6             | sharp jerk         |
+| thinking  | `#ffcc00`   | 0.6             | slow oscillate     | ← client-side only, never returned by Gemini |
 
 ---
 
@@ -143,7 +145,9 @@ While the GLB is downloading, display a minimal loading overlay (dark background
 
 ## Face Screen
 
-A `PlaneGeometry` whose world transform is manually synced each frame to the face bone's world matrix.
+**Important:** K-VRC's face screen is the dark helmet visor — it is already a mesh in the GLB. Rather than attaching a floating `PlaneGeometry`, identify the visor mesh by name (traverse the scene, look for a mesh whose name contains "visor", "screen", "face", or "display") and replace its `material.map` with the `CanvasTexture`. This is cleaner and stays flush with the model geometry.
+
+If the visor mesh cannot be isolated (e.g. it is merged into the head mesh), fall back to a `PlaneGeometry` synced to the face bone as described below.
 
 **Important ordering:** `getWorldPosition` and `getWorldQuaternion` must be called before the offset is applied. The offset must use `applyQuaternion` (not `translateZ`) to avoid per-frame drift if lines are reordered:
 
