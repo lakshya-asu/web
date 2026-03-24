@@ -51,6 +51,10 @@ nav {
   padding: 24px 64px;
   border-bottom: 1px solid var(--divider);
   margin-bottom: 52px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: var(--bg);
 }
 .nav-brand {
   font-family: var(--font-heading);
@@ -273,7 +277,10 @@ nav {
   letter-spacing: 1px;
   padding: 3px 8px;
   font-weight: 600;
+  transition: filter 0.2s, transform 0.2s;
 }
+a.tag { display: inline-block; text-decoration: none; }
+a.tag:hover { filter: brightness(1.2); transform: translateY(-1px); }
 .tag.rl       { background: #00e5cc18; color: var(--rl);       border: 1px solid #00e5cc33; }
 .tag.ros      { background: #00c2e018; color: var(--ros);      border: 1px solid #00c2e033; }
 .tag.llm      { background: #38bdf818; color: var(--llm);      border: 1px solid #38bdf833; }

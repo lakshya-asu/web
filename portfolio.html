@@ -13,7 +13,7 @@
 <body>
 
 <nav>
-  <span class="nav-brand">LJ</span>
+  <a href="#" class="nav-brand">LJ</a>
   <div class="nav-links">
     <a href="https://web-gamma-inky-88.vercel.app" target="_blank" rel="noopener noreferrer">K-VRC</a>
     <a href="#">RESUME</a>
@@ -51,7 +51,7 @@
   <div class="bento">
 
     <!-- DIA — featured, row 1 cols 1-2 -->
-    <div class="card featured" style="grid-row: 1; grid-column: 1 / span 2;">
+    <div class="card featured" id="project-dia" style="grid-row: 1; grid-column: 1 / span 2;">
       <div class="card-accent" style="background: linear-gradient(90deg, #00e5cc, #a78bfa, #00e5cc 60%);"></div>
       <div class="card-media">
         <iframe src="https://www.youtube.com/embed/JLc8W80h7K8" title="Discover-Intervene-Adapt demo" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
@@ -74,7 +74,7 @@
     </div>
 
     <!-- IntuitionAI — row 2 col 1 -->
-    <div class="card" style="grid-row: 2; grid-column: 1;">
+    <div class="card" id="project-intuition" style="grid-row: 2; grid-column: 1;">
       <div class="card-accent" style="background: linear-gradient(90deg, #38bdf8, #00e5cc, #a78bfa);"></div>
       <div class="card-media">
         <div class="badge" style="background: #38bdf8;">1ST PLACE</div>
@@ -96,7 +96,7 @@
     </div>
 
     <!-- MAPG — featured, row 2 cols 2-3 -->
-    <div class="card featured" style="grid-row: 2; grid-column: 2 / span 2;">
+    <div class="card featured" id="project-mapg" style="grid-row: 2; grid-column: 2 / span 2;">
       <div class="card-accent" style="background: linear-gradient(90deg, #00c2e0, #22d3ee, #38bdf8, #a78bfa);"></div>
       <div class="card-media">
         <iframe src="https://www.youtube.com/embed/zK7Ya-g9eXg" title="Meanings and Measurements: Multi-Agent Probabilistic Grounding demo" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
@@ -119,7 +119,7 @@
     </div>
 
     <!-- AI Therapist in VR -->
-    <div class="card">
+    <div class="card" id="project-vr">
       <div class="card-accent" style="background: linear-gradient(90deg, #818cf8, #38bdf8, #00e5cc);"></div>
       <div class="card-media">
         <iframe src="https://www.youtube.com/embed/8VDQBLimXk4" title="AI Therapist in VR demo" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
@@ -140,7 +140,7 @@
     </div>
 
     <!-- HERCARA -->
-    <div class="card">
+    <div class="card" id="project-hercara">
       <div class="card-accent" style="background: linear-gradient(90deg, #00c2e0, #34d399, #22d3ee);"></div>
       <div class="card-media">
         <div class="badge" style="background: #00c2e0;">GOVT. FUNDED</div>
@@ -162,7 +162,7 @@
     </div>
 
     <!-- Robotic Chess Arm -->
-    <div class="card">
+    <div class="card" id="project-chess">
       <div class="card-accent" style="background: linear-gradient(90deg, #00c2e0, #67e8f9, #00c2e0 60%);"></div>
       <div class="card-media">
         <img src="content/chess-robot.png" alt="Robotic Chess Arm" style="width:100%; height:100%; object-fit:cover;" />
@@ -183,7 +183,7 @@
     </div>
 
     <!-- Flight Autopilot -->
-    <div class="card">
+    <div class="card" id="project-autopilot">
       <div class="card-accent" style="background: linear-gradient(90deg, #38bdf8, #a78bfa, #38bdf8 60%);"></div>
       <div class="card-media">
         <div class="badge" style="background: #38bdf8;">3RD PLACE</div>
@@ -204,7 +204,7 @@
     </div>
 
     <!-- Rayar -->
-    <div class="card">
+    <div class="card" id="project-rayar">
       <div class="card-accent" style="background: linear-gradient(90deg, #34d399, #22d3ee);"></div>
       <div class="card-media">
         <div class="badge" style="background: #34d399;">#6 WORLDWIDE</div>
@@ -225,7 +225,7 @@
     </div>
 
     <!-- Forest Surveillance Rover -->
-    <div class="card">
+    <div class="card" id="project-forest">
       <div class="card-accent" style="background: linear-gradient(90deg, #34d399, #22d3ee, #a78bfa);"></div>
       <div class="card-media">
         <div class="badge" style="background: #34d399;">PUBLISHED</div>
@@ -247,7 +247,7 @@
     </div>
 
     <!-- Snydrone -->
-    <div class="card">
+    <div class="card" id="project-snydrone">
       <div class="card-accent" style="background: linear-gradient(90deg, #00c2e0, #38bdf8, #00c2e0 60%);"></div>
       <div class="card-media">
         <img src="content/snydrone.jpeg" alt="Snydrone" style="width:100%; height:100%; object-fit:cover;" />
@@ -340,30 +340,30 @@
 <section class="section" id="skills">
   <div class="sec-title">TECHNICAL SKILLS</div>
   <div class="chip-wrap">
-    <span class="tag rl">CAUSAL REASONING</span>
-    <span class="tag rl">DEEP RL</span>
-    <span class="tag rl">CURRICULUM LEARNING</span>
-    <span class="tag ros">ROS / ROS2</span>
-    <span class="tag ros">MOVEIT</span>
-    <span class="tag ros">SLAM</span>
-    <span class="tag ros">MPC</span>
-    <span class="tag ros">PATH PLANNING (A*, RRT)</span>
-    <span class="tag ros">SENSOR FUSION</span>
-    <span class="tag llm">RAG SYSTEMS</span>
-    <span class="tag llm">TRANSFORMERS</span>
-    <span class="tag llm">NLP</span>
-    <span class="tag ml">PYTORCH</span>
-    <span class="tag ml">TENSORFLOW</span>
-    <span class="tag ml">DEEP LEARNING</span>
-    <span class="tag sim">ISAAC SIM</span>
-    <span class="tag sim">GAZEBO</span>
-    <span class="tag sim">PYBULLET</span>
-    <span class="tag vr">UNREAL ENGINE 5</span>
-    <span class="tag hardware">PYTHON</span>
-    <span class="tag hardware">C++</span>
-    <span class="tag hardware">DOCKER</span>
-    <span class="tag hardware">KUBERNETES</span>
-    <span class="tag hardware">AWS / GCP</span>
+    <a href="#project-dia" class="tag rl">CAUSAL REASONING</a>
+    <a href="#project-dia" class="tag rl">DEEP RL</a>
+    <a href="#project-intuition" class="tag rl">CURRICULUM LEARNING</a>
+    <a href="#project-snydrone" class="tag ros">ROS / ROS2</a>
+    <a href="#project-chess" class="tag ros">MOVEIT</a>
+    <a href="#project-mapg" class="tag ros">SLAM</a>
+    <a href="#project-snydrone" class="tag ros">MPC</a>
+    <a href="#project-snydrone" class="tag ros">PATH PLANNING (A*, RRT)</a>
+    <a href="#project-hercara" class="tag ros">SENSOR FUSION</a>
+    <a href="#project-autopilot" class="tag llm">RAG SYSTEMS</a>
+    <a href="#project-intuition" class="tag llm">TRANSFORMERS</a>
+    <a href="#project-mapg" class="tag llm">NLP</a>
+    <a href="#project-dia" class="tag ml">PYTORCH</a>
+    <a href="#project-forest" class="tag ml">TENSORFLOW</a>
+    <a href="#project-dia" class="tag ml">DEEP LEARNING</a>
+    <a href="#project-chess" class="tag sim">ISAAC SIM</a>
+    <a href="#project-snydrone" class="tag sim">GAZEBO</a>
+    <a href="#project-dia" class="tag sim">PYBULLET</a>
+    <a href="#project-vr" class="tag vr">UNREAL ENGINE 5</a>
+    <a href="#project-dia" class="tag hardware">PYTHON</a>
+    <a href="#project-hercara" class="tag hardware">C++</a>
+    <a href="#project-mapg" class="tag hardware">DOCKER</a>
+    <a href="#project-mapg" class="tag hardware">KUBERNETES</a>
+    <a href="#project-dia" class="tag hardware">AWS / GCP</a>
   </div>
 </section>
 </main>
