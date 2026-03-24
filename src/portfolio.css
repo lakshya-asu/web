@@ -440,9 +440,12 @@ a.tag:hover { filter: brightness(1.2); transform: translateY(-1px); }
   }
   .bento {
     grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
   }
-  .card.featured {
-    grid-column: auto;
+  .card, .card.featured {
+    grid-column: auto !important;
+    grid-row: auto !important;
   }
   .card.featured .card-media {
     height: 350px;
