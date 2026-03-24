@@ -1,0 +1,54 @@
+DIA: https://www.youtube.com/watch?v=JLc8W80h7K8
+https://github.com/lakshya-asu/Discover-Intervene-Adapt-Interleaved-Causal-RL
+
+
+MAPG: https://www.youtube.com/watch?v=zK7Ya-g9eXg
+https://github.com/lakshya-asu/Meanings-Measurements-Multi-Agent-Probabilistic-Grounding
+
+
+IntuitionAI: https://www.youtube.com/watch?v=Jxtuq2Zyqb4
+https://github.com/lakshya-asu/IntuitionAI
+
+
+
+AI Therapist: https://www.youtube.com/watch?v=8VDQBLimXk4
+
+
+
+
+
+K-VRC: https://www.youtube.com/watch?v=kKQ4Dd2oNzc
+https://github.com/lakshya-asu/K-VRC
+https://portfolio-cd1qfewp6-lakshya04.vercel.app
+
+HERCARA: Aerostat VTOL image
+
+
+
+
+Robotic Chess Arm: Robotic Arm GZ
+https://github.com/lakshya-asu/RobotChessPlayer
+
+
+
+Flight Autopilot System: Autopilot image
+
+
+
+
+Rayar RC Airplane: https://drive.google.com/file/d/1k57yxWkCRq-HvqOEudLYvvPBIjvR1_dL/view?usp=sharing
+https://drive.google.com/file/d/13KbJVKALCQSXlPODDec7zntvxLWamiqk/view?usp=sharing
+
+https://drive.google.com/file/d/1t-bF88D5K1Pqw31DC6tl9z7ckMRB5odi/view?usp=sharing
+
+
+Snydrone: 
+https://github.com/lakshya-asu/snydrone
+
+Forest_surveillance_rover:
+https://github.com/lakshya-asu/forest_surveillance_rover
+
+Autonomous Gliders:
+https://github.com/lakshya-asu/autonomous_glider_proto
+
+Shattered Depths (Godot Video Game):
