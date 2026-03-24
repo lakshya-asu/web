@@ -406,3 +406,59 @@ a.tag:hover { filter: brightness(1.2); transform: translateY(-1px); }
   color: var(--text-dim);
   letter-spacing: 1px;
 }
+
+/* RESPONSIVE DESIGN */
+@media (max-width: 800px) {
+  nav {
+    padding: 16px 24px;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .hero {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    padding: 0 24px;
+    margin-bottom: 48px;
+  }
+  .hero-name {
+    font-size: 42px;
+    white-space: normal;
+  }
+  .hero-photo-wrap {
+    height: 320px;
+  }
+  .hero-text {
+    order: 2; /* Put text below image on mobile, or just leave it above */
+  }
+  .hero-photo-wrap {
+    order: 1; /* Image first on mobile */
+  }
+  .section {
+    padding: 0 24px;
+    margin-bottom: 48px;
+  }
+  .bento {
+    grid-template-columns: 1fr;
+  }
+  .card.featured {
+    grid-column: auto;
+  }
+  .card.featured .card-media {
+    height: 350px;
+  }
+  .card-media {
+    height: 250px;
+  }
+  .tl-item {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    padding: 16px 0;
+  }
+  .two-col {
+    grid-template-columns: 1fr;
+  }
+  .footer {
+    padding: 32px 24px;
+  }
+}
