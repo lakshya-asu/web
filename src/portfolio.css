@@ -439,11 +439,14 @@ a.tag:hover { filter: brightness(1.2); transform: translateY(-1px); }
     margin-bottom: 48px;
   }
   .bento {
-    grid-template-columns: 1fr;
-    display: flex;
-    flex-direction: column;
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
   }
   .card, .card.featured {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
     grid-column: auto !important;
     grid-row: auto !important;
   }
