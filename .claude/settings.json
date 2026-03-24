@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:app.spline.design)",
+      "Bash(unzip -l 'k-vrc-rigged/source/K-VRC Rigged.zip')",
+      "Bash(node -e \"const {GLTFLoader} = require\\(''''three/addons''''\\)\")",
+      "Bash(find /home/flux/website -maxdepth 3 -name *.glb -o -name *.jpeg -o -name *.jpg)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
+    ],
+    "additionalDirectories": [
+      "/home/flux/website/docs/superpowers",
+      "/home/flux/.claude/projects/-home-flux-website"
+    ]
+  }
+}

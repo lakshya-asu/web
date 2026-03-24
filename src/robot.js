@@ -3,10 +3,21 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
 import { EMOTION_MAP } from './emotions.js';
 import { attachFaceScreen, updateFaceScreen, tickFaceScreen } from './faceScreen.js';
+import { AnimationController } from './animationController.js';
 
-// ── Bone name constants (verified from GLB inspection) ───────
-// Rig uses Slavic naming convention. No jaw bone exists in this rig.
-const BONES = {
+// ── Bone name constants ──────────────────────────────────────
+// New rig (kvrc.glb) uses Mixamo-compatible names.
+// Falls back to old Slavic names if new GLB not available.
+const BONES_NEW = {
+  head:    'Head',
+  jaw:     null,
+  chest:   'Spine2',
+  armL:    'LeftArm',
+  forearmL:'LeftForeArm',
+  armR:    'RightArm',
+  forearmR:'RightForeArm',
+};
+const BONES_OLD = {
   head:    'Head_6',
   jaw:     null,
   chest:   'spina_13',
@@ -15,6 +26,8 @@ const BONES = {
   armR:    'ruka1.R_12',
   forearmR:'ruka2.R_11',
 };
+// Resolved at load time based on which GLB is used
+let BONES = BONES_NEW;
 
 // Mixamo FBX → robot bone key mapping (arm bones only)
 const DANCE_BONE_MAP = {
@@ -31,6 +44,7 @@ let baseY = 0;
 let clock = 0;
 let currentEmotionCfg = EMOTION_MAP.neutral;
 let blinkTimer = randomBetween(3, 6);
+const animCtrl = new AnimationController();
 
 // Dancing FBX ghost skeleton
 let fbxMixer = null;
@@ -53,16 +67,34 @@ function randomBetween(a, b) { return a + Math.random() * (b - a); }
  */
 export async function initRobot(scene) {
   const loader = new GLTFLoader();
-  const gltf = await new Promise((resolve, reject) => {
-    loader.load('/k-vrc_rigged.glb', resolve, undefined, reject);
-  });
+
+  // Try new rigged GLB first, fall back to old
+  let gltf;
+  let usingNewRig = false;
+  try {
+    gltf = await new Promise((resolve, reject) =>
+      loader.load('/models/kvrc.glb', resolve, undefined, reject));
+    usingNewRig = true;
+    console.log('Loaded new K-VRC rig (kvrc.glb)');
+  } catch {
+    console.warn('kvrc.glb not found, falling back to k-vrc_rigged.glb');
+    gltf = await new Promise((resolve, reject) =>
+      loader.load('/k-vrc_rigged.glb', resolve, undefined, reject));
+  }
+
+  BONES = usingNewRig ? BONES_NEW : BONES_OLD;
 
   robotRoot = gltf.scene;
   scene.add(robotRoot);
 
-  // Center and scale robot (adjust values after visual check)
-  robotRoot.scale.setScalar(0.165);
-  robotRoot.position.set(0, -0.15, 0);
+  // New rig is already 1.8 units tall at world scale; old rig needs scaling
+  if (usingNewRig) {
+    robotRoot.scale.setScalar(1.0);
+    robotRoot.position.set(0, -0.9, 0);
+  } else {
+    robotRoot.scale.setScalar(0.165);
+    robotRoot.position.set(0, -0.15, 0);
+  }
   baseY = robotRoot.position.y;
 
   // Resolve bone references
@@ -76,6 +108,13 @@ export async function initRobot(scene) {
       if (obj.name === BONES.forearmR) bones.forearmR = obj;
     }
   });
+
+  // Init AnimationController with Mixamo clips from new GLB
+  if (usingNewRig && gltf.animations?.length) {
+    animCtrl.init(robotRoot, gltf.animations);
+    animCtrl.playGesture('idle');
+    console.log('AnimationController ready. Available gestures:', animCtrl.availableGestures);
+  }
 
   // Save arm rest quaternions so we can restore them when leaving excited state
   for (const key of ['armL', 'forearmL', 'armR', 'forearmR']) {
@@ -120,6 +159,7 @@ export async function initRobot(scene) {
     setEmotionCfg: (cfg) => { currentEmotionCfg = cfg; },
     triggerHeadJerk,
     startBodyMotion,
+    playGesture: (name) => animCtrl.playGesture(name),
   };
 }
 
@@ -191,6 +231,9 @@ export function updateRobot(delta) {
       if (src && dst) dst.quaternion.copy(src.quaternion);
     }
   }
+
+  // Animation mixer (Mixamo clips)
+  animCtrl.update(delta);
 
   // Face canvas blink (independent of bone rig)
   tickFaceScreen(delta * 1000);

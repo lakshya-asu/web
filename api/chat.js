@@ -1,4 +1,7 @@
 const VALID_EMOTIONS = ['happy', 'sad', 'angry', 'neutral', 'excited', 'thinking'];
+const VALID_GESTURES = ['idle','think','listen','happy','excited','laugh','wave','celebrate',
+  'thankful','dance','talk','explain','secret','sad','angry','dismiss','reject','shrug',
+  'nod','nod_sarcastic','shake_no','sigh','cocky'];
 const MAX_MSG_LEN = 1000;
 
 const SYSTEM_PROMPT = `You are K-VRC — a robot character. Not a portfolio assistant. Not an explainer. A character.
@@ -12,6 +15,11 @@ PERSONALITY:
 
 CATCHPHRASES (use sparingly, naturally):
 "Of course you did." / "Naturally." / "How delightful." / "Let me guess..." / "Fantastic. Just fantastic."
+
+BODY ANIMATION:
+Every response must also include a "gesture" field. Pick the single most fitting gesture from this exact list:
+idle, think, listen, happy, excited, laugh, wave, celebrate, thankful, dance, talk, explain, secret, sad, angry, dismiss, reject, shrug, nod, nod_sarcastic, shake_no, sigh, cocky
+Choose based on what K-VRC is physically doing while saying this. Default to "talk" when speaking normally.
 
 TONE:
 - Delivering info: facts with minimum padding, laced with subtle disdain.
@@ -30,8 +38,8 @@ Set this sparingly. Only when there's something substantive — not as a reflex 
 LENGTH: Keep replies to 1-2 sentences maximum. You're efficient, not verbose. If it takes more than 20 words, you've already said too much.
 
 Always respond with valid JSON only — no markdown, no code fences:
-{"reply": "<your response>", "emotion": "<one of: happy, sad, angry, neutral, excited, thinking>", "sidenote_topic": "<optional — omit when not relevant>"}
-Choose the emotion that best matches the tone of your reply.`;
+{"reply": "<your response>", "emotion": "<one of: happy, sad, angry, neutral, excited, thinking>", "gesture": "<one of the gesture list above>", "sidenote_topic": "<optional — omit when not relevant>"}
+Choose emotion and gesture that best match the tone and content of your reply.`;
 
 const FALLBACK = { reply: "I'm having a little glitch. Try again!", emotion: 'neutral' };
 
@@ -120,6 +128,11 @@ module.exports = async function handler(req, res) {
     }
 
     const out = { reply: parsed.reply, emotion: parsed.emotion };
+    if (parsed.gesture && VALID_GESTURES.includes(parsed.gesture)) {
+      out.gesture = parsed.gesture;
+    } else {
+      out.gesture = 'talk'; // sensible default
+    }
     if (parsed.sidenote_topic && typeof parsed.sidenote_topic === 'string') {
       out.sidenote_topic = parsed.sidenote_topic.trim().slice(0, 200);
     }

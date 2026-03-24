@@ -1,4 +1,4 @@
-import { setEmotion } from './faceScreen.js';
+import { setEmotion, setSpeakingAmplitude } from './faceScreen.js';
 import { applyEmotion } from './emotions.js';
 import { fetchSidenote, hideSidenote } from './sidenote.js';
 
@@ -22,6 +22,10 @@ function setupTTS() {
   loadVoices();
 }
 
+// Fake amplitude from word boundaries (Web Speech API has no real amplitude)
+let _ampPulse = 0;
+let _ampInterval = null;
+
 function speak(text) {
   if (!window.speechSynthesis || !ttsVoice) return;
   window.speechSynthesis.cancel();
@@ -29,14 +33,20 @@ function speak(text) {
   utt.voice = ttsVoice;
   utt.rate = 0.95;
   utt.pitch = 0.85;
+  utt.onstart = () => {
+    // Pulse amplitude up/down to animate waveform
+    _ampInterval = setInterval(() => {
+      _ampPulse = 0.3 + Math.random() * 0.7;
+      setSpeakingAmplitude(_ampPulse);
+    }, 120);
+  };
   utt.onboundary = () => {
-    if (robotRef?.bones?.jaw) {
-      const j = robotRef.bones.jaw;
-      j.rotation.x = (j.rotation.x > 0.05) ? 0 : 0.18;
-    }
+    _ampPulse = 0.5 + Math.random() * 0.5;
+    setSpeakingAmplitude(_ampPulse);
   };
   utt.onend = () => {
-    if (robotRef?.bones?.jaw) robotRef.bones.jaw.rotation.x = 0;
+    clearInterval(_ampInterval);
+    setSpeakingAmplitude(0);
     isSpeaking = false;
   };
   isSpeaking = true;
@@ -124,6 +134,7 @@ async function sendMessage(text) {
     reply = data.reply;
     emotion = data.emotion ?? 'neutral';
     sidenote_topic = data.sidenote_topic ?? null;
+    if (data.gesture) robotRef?.playGesture(data.gesture);
   } catch (err) {
     console.error('Chat error:', err);
     addBubble("K-VRC is having trouble connecting. Try again?", 'robot');
