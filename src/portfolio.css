@@ -25,6 +25,7 @@
   --vision:   #22d3ee;
   --sim:      #67e8f9;
   --ml:       #a78bfa;
+  --cad:      #fb923c;
 
   --font-name:    'League Spartan', sans-serif;
   --font-heading: 'Montserrat', sans-serif;
@@ -306,6 +307,7 @@ a.tag:hover { filter: brightness(1.25); transform: translateY(-1px); }
 .tag.vision   { background: #22d3ee22; color: var(--vision);   border: 1px solid #22d3ee40; }
 .tag.sim      { background: #67e8f922; color: var(--sim);      border: 1px solid #67e8f940; }
 .tag.ml       { background: #a78bfa22; color: var(--ml);       border: 1px solid #a78bfa40; }
+.tag.cad      { background: #fb923c22; color: var(--cad);      border: 1px solid #fb923c40; }
 
 .card-footer {
   display: flex;
