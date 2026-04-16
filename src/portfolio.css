@@ -366,6 +366,44 @@ a.tag:hover { filter: brightness(1.2); transform: translateY(-1px); }
 .info-card li a { color: var(--llm); }
 .info-card li a:hover { text-decoration: underline; }
 
+/* LECTURE GRID */
+.lecture-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+.lecture-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-top: 2px solid var(--cyan);
+  padding: 14px 16px;
+  text-decoration: none;
+  transition: border-color 0.2s, background 0.2s;
+  gap: 10px;
+}
+.lecture-card:hover {
+  border-top-color: #38bdf8;
+  background: #0f2828;
+}
+.lecture-title {
+  font-family: var(--font-heading);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--card-title);
+  line-height: 1.4;
+  letter-spacing: 0.5px;
+}
+.lecture-link {
+  font-family: var(--font-heading);
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--cyan);
+}
+.lecture-card:hover .lecture-link { text-decoration: underline; }
+
 /* SKILLS */
 .chip-wrap { display: flex; flex-wrap: wrap; gap: 8px; }
 
@@ -463,6 +501,9 @@ a.tag:hover { filter: brightness(1.2); transform: translateY(-1px); }
   }
   .two-col {
     grid-template-columns: 1fr;
+  }
+  .lecture-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
   .footer {
     padding: 32px 24px;
